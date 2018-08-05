@@ -134,6 +134,8 @@ public class Response {
             text.append("\r\n");
         }
 
+        text.append("\r\n");
+
         return text.toString();
     }
 }

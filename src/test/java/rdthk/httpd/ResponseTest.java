@@ -26,4 +26,12 @@ public class ResponseTest {
         assertTrue(out.toString().contains("Content-Type: text/plain\r\n"));
         assertTrue(out.toString().contains("X-Header-2: foo\r\n"));
     }
+
+    @Test
+    void testDefaultResponse() {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        Response response = new Response(out);
+        response.getOutputStream(); // commits the response and returns the output stream.
+        assertEquals("HTTP/1.1 200 OK\r\n\r\n", out.toString());
+    }
 }
