@@ -1,6 +1,7 @@
 package rdthk.httpd;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,8 +12,7 @@ public class Response {
     private int statusCode;
     private String reasonPhrase;
     private Map<String, String> headers = new HashMap<>();
-
-    private boolean commited = false;
+    private boolean committed = false;
 
     public Response(OutputStream outputStream) {
         this.outputStream = outputStream;
@@ -104,8 +104,8 @@ public class Response {
         return outputStream;
     }
 
-    public boolean isCommited() {
-        return commited;
+    public boolean isCommitted() {
+        return committed;
     }
 
     private void commit() {
@@ -113,6 +113,7 @@ public class Response {
             String encoding = headers.getOrDefault("Content-encoding", "UTF-8");
             byte[] bytes = buildResponseString().getBytes(encoding);
             outputStream.write(bytes);
+            committed = true;
         } catch (IOException e) {
             throw new HttpdException(e);
         }
@@ -137,5 +138,16 @@ public class Response {
         text.append("\r\n");
 
         return text.toString();
+    }
+
+    public void write(InputStream stream) throws IOException {
+        commit();
+
+        byte[] buf = new byte[8192];
+        int bytes;
+
+        while ((bytes = stream.read(buf)) != -1) {
+            outputStream.write(buf, 0, bytes);
+        }
     }
 }

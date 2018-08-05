@@ -2,7 +2,10 @@ package rdthk.httpd;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,6 +35,17 @@ public class ResponseTest {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         Response response = new Response(out);
         response.getOutputStream(); // commits the response and returns the output stream.
+        assertTrue(response.isCommitted());
         assertEquals("HTTP/1.1 200 OK\r\n\r\n", out.toString());
+    }
+
+    @Test
+    void testInputStreamWrite() throws IOException {
+        ByteArrayInputStream in = new ByteArrayInputStream("foobar".getBytes(StandardCharsets.UTF_8));
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        Response response = new Response(out);
+        response.write(in);
+        assertTrue(response.isCommitted());
+        assertEquals("HTTP/1.1 200 OK\r\n\r\nfoobar", out.toString());
     }
 }
