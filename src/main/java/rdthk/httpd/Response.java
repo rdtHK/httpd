@@ -3,6 +3,7 @@ package rdthk.httpd;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -110,8 +111,7 @@ public class Response {
 
     private void commit() {
         try {
-            String encoding = headers.getOrDefault("Content-encoding", "UTF-8");
-            byte[] bytes = buildResponseString().getBytes(encoding);
+            byte[] bytes = buildResponseString().getBytes(StandardCharsets.UTF_8);
             outputStream.write(bytes);
             committed = true;
         } catch (IOException e) {
@@ -149,5 +149,9 @@ public class Response {
         while ((bytes = stream.read(buf)) != -1) {
             outputStream.write(buf, 0, bytes);
         }
+    }
+
+    public void end() {
+        commit();
     }
 }

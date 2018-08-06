@@ -15,7 +15,7 @@ public class ResponseTest {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         Response response = new Response(out);
         response.setStatusCode(404);
-        response.getOutputStream(); // commits the response and returns the output stream.
+        response.end();
         assertTrue(out.toString().startsWith("HTTP/1.1 404 Not Found\r\n"));
     }
 
@@ -25,7 +25,7 @@ public class ResponseTest {
         Response response = new Response(out);
         response.putHeader("Content-Type", "text/plain");
         response.putHeader("X-Header-2", "foo");
-        response.getOutputStream(); // commits the response and returns the output stream.
+        response.end();
         assertTrue(out.toString().contains("Content-Type: text/plain\r\n"));
         assertTrue(out.toString().contains("X-Header-2: foo\r\n"));
     }
@@ -34,7 +34,7 @@ public class ResponseTest {
     void testDefaultResponse() {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         Response response = new Response(out);
-        response.getOutputStream(); // commits the response and returns the output stream.
+        response.end();
         assertTrue(response.isCommitted());
         assertEquals("HTTP/1.1 200 OK\r\n\r\n", out.toString());
     }
