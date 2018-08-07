@@ -88,6 +88,10 @@ public class Response {
         this.reasonPhrase = reasonPhrase;
     }
 
+    public String getHeader(String name) {
+        return headers.get(name);
+    }
+
     public Map<String, String> getHeaders() {
         return headers;
     }

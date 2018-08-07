@@ -21,4 +21,11 @@ public class FileLoaderTest {
         Path path = loader.load("foobar.txt");
         assertNull(path);
     }
+
+    @Test
+    void testReturnsNullOnFolders() {
+        FileLoader loader = new FileLoader("src/test/resources");
+        Path path = loader.load(".");
+        assertNull(path);
+    }
 }

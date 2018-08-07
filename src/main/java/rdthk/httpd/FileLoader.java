@@ -14,7 +14,7 @@ public class FileLoader {
     public Path load(String path) {
         Path file = Paths.get(basePath, path);
 
-        if (Files.exists(file)) {
+        if (Files.exists(file) && !Files.isDirectory(file)) {
             return file;
         } else {
             return null;
