@@ -8,11 +8,6 @@ public class Httpd {
     private final RequestHandler requestHandler;
     private boolean running;
 
-    public static void main(String[] args) {
-        Httpd httpd = new Httpd(new RequestHandler(new FileLoader("src/test/resources")));
-        httpd.start(3000);
-    }
-
     public Httpd(RequestHandler requestHandler) {
         this.requestHandler = requestHandler;
     }
